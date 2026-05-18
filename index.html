@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Walter JobPrep — Entrevistas Profissionais</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0f1e; min-height: 100vh; }
+    .app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #0f172a; color: #f1f5f9; }
+    .header { background: rgba(15,23,42,0.97); border-bottom: 1px solid #1e293b; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+    .logo-icon { width: 32px; height: 32px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .nav button { background: none; border: none; color: #64748b; font-size: 12px; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
+    .nav button:hover { color: #60a5fa; background: rgba(96,165,250,0.08); }
+    .main { padding: 20px 16px; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 999px; background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.25); color: #60a5fa; font-size: 11px; margin-bottom: 16px; }
+    h1 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+    .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 16px; }
+    .back-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+    .btn-primary { width: 100%; background: #2563eb; border: none; border-radius: 12px; padding: 14px; font-size: 14px; font-weight: 500; color: #fff; cursor: pointer; margin-top: 12px; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .search-input { width: 100%; background: #0a0f1e; border: 1px solid #334155; border-radius: 12px; color: #fff; padding: 14px; margin-bottom: 16px; font-size: 14px; }
+    .company-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+    .company-btn { background: #0f172a; border: 1px solid #334155; border-radius: 10px; color: #94a3b8; font-size: 12px; padding: 8px 12px; cursor: pointer; }
+    .company-btn:hover { border-color: #3b82f6; color: #fff; }
+    .chat-wrap { display: flex; flex-direction: column; height: 520px; }
+    .messages { flex: 1; overflow-y: auto; padding: 16px; background: rgba(15,23,42,0.5); border-radius: 16px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 12px; }
+    .msg { display: flex; }
+    .msg.user { justify-content: flex-end; }
+    .msg-bubble { padding: 10px 14px; border-radius: 14px; font-size: 13px; max-width: 85%; line-height: 1.5; }
+    .msg.bot .msg-bubble { background: #1e293b; border: 1px solid #334155; border-top-left-radius: 3px; }
+    .msg.user .msg-bubble { background: #2563eb; border-top-right-radius: 3px; }
+    .input-row { display: flex; gap: 8px; background: #1e293b; border-radius: 14px; border: 1px solid #334155; padding: 5px; }
+    .input-row input { flex: 1; background: none; border: none; outline: none; color: #fff; padding: 10px; font-size: 13px; }
+    .send-btn { background: #2563eb; border: none; border-radius: 10px; width: 40px; cursor: pointer; font-size: 18px; color: white; }
+    .typing { display: flex; gap: 4px; padding: 10px 14px; background: #1e293b; border-radius: 14px; width: fit-content; }
+    .dot { width: 6px; height: 6px; background: #60a5fa; border-radius: 50%; animation: pulse 1s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    .toast { position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e293b; border-left: 4px solid #10b981; padding: 12px; border-radius: 12px; z-index: 1000; text-align: center; font-size: 13px; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .tip-box { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; padding: 10px; margin-top: 8px; font-size: 11px; text-align: center; }
+    .question-list { background: rgba(30,41,59,0.5); border-radius: 16px; padding: 16px; margin: 16px 0; }
+    .question-item { font-size: 12px; padding: 8px 0; border-bottom: 1px solid #1e293b; color: #94a3b8; }
+    .question-item:last-child { border-bottom: none; }
+    .question-num { color: #60a5fa; font-weight: 600; margin-right: 8px; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="logo"><div class="logo-icon">🎤</div> Walter JobPrep</div>
+    <div class="nav">
+      <button onclick="showView('home')">Início</button>
+      <button onclick="showView('company')">Entrevista</button>
+    </div>
+  </div>
+  <div class="main" id="app-content"></div>
+</div>
+
+<script>
+const GROQ_KEY = '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';
+
+// ============================================
+// PERGUNTAS REAIS (obrigatórias - vêm primeiro)
+// ============================================
+const MANDATORY_QUESTIONS = [
+  "Fale um pouco sobre você.",
+  "Por que você quer trabalhar nesta empresa?",
+  "Quais são seus pontos fortes?",
+  "Quais são seus pontos fracos?",
+  "Onde você se vê daqui a 5 anos?",
+  "Por que devemos contratar você?",
+  "Qual sua experiência anterior?",
+  "Você sabe trabalhar em equipe? Dê um exemplo.",
+  "Como você lida com pressão e prazos?",
+  "Qual sua disponibilidade de horário?",
+  "Qual sua pretensão salarial?",
+  "Você tem alguma pergunta para nós?"
+];
+
+const companies = ['RECHEIO', 'MOZAL', 'SHOPRITE', 'BIM', 'TOTALENERGIES', 'KFC', 'COCA-COLA', 'EDM'];
+
+let currentView = 'home';
+let currentCompany = '';
+let messages = [];
+let isLoading = false;
+let questionIndex = 0;
+let isExtraQuestions = false;
+
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+function showView(view, companyName) {
+  currentView = view;
+  if (companyName !== undefined) {
+    currentCompany = companyName;
+    messages = [];
+    questionIndex = 0;
+    isExtraQuestions = false;
+    messages.push({ role: 'bot', text: `Olá! Sou o entrevistador da ${currentCompany}. Vamos começar.\n\n${MANDATORY_QUESTIONS[0]}` });
+  }
+  render();
+  if (view === 'chat') {
+    setTimeout(() => { const a = document.getElementById('messages-area'); if(a) a.scrollTop = a.scrollHeight; }, 100);
+    document.getElementById('msg-input')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendMessage(); });
+  }
+}
+
+function render() {
+  const el = document.getElementById('app-content');
+  if (currentView === 'home') el.innerHTML = renderHome();
+  else if (currentView === 'company') el.innerHTML = renderCompany();
+  else if (currentView === 'chat') el.innerHTML = renderChat();
+}
+
+function renderHome() {
+  return `
+    <div style="text-align:center;">
+      <div class="badge">🎯 ENTREVISTAS REAIS</div>
+      <h1>Treine com as <span style="color:#60a5fa;">perguntas que sempre caem</span></h1>
+      <p class="subtitle">12 perguntas obrigatórias + perguntas adicionais da IA</p>
+      <div class="question-list">
+        <div style="font-weight:600; margin-bottom:12px;">📋 As 12 perguntas obrigatórias:</div>
+        ${MANDATORY_QUESTIONS.map((q, i) => `<div class="question-item"><span class="question-num">${i+1}.</span> ${q}</div>`).join('')}
+      </div>
+      <button class="btn-primary" onclick="showView('company')" style="margin-top:8px;">🎤 Começar treino</button>
+    </div>
+  `;
+}
+
+function renderCompany() {
+  return `
+    <div style="text-align:center;">
+      <div style="font-size:40px; margin-bottom:12px;">🏢</div>
+      <h2 style="font-size:20px;">Escolha a empresa</h2>
+      <p style="color:#94a3b8; margin-bottom:20px;">Primeiro as 12 perguntas obrigatórias, depois a IA continua</p>
+      <div class="company-grid">
+        ${companies.map(c => `<button class="company-btn" onclick="showView('chat','${c}')">${c}</button>`).join('')}
+      </div>
+      <input class="search-input" id="custom-company" placeholder="Ou digite outra empresa..." />
+      <button class="btn-primary" onclick="startCustom()">▶ Iniciar entrevista</button>
+      <button class="back-btn" onclick="showView('home')" style="margin-top:16px;">← Voltar</button>
+    </div>
+  `;
+}
+
+function startCustom() {
+  const c = document.getElementById('custom-company')?.value.trim();
+  if(c) showView('chat', c.toUpperCase());
+  else showToast('Digite o nome da empresa');
+}
+
+function renderChat() {
+  const total = MANDATORY_QUESTIONS.length;
+  const current = isExtraQuestions ? total : questionIndex;
+  const max = isExtraQuestions ? 'Extra' : `${questionIndex}/${total}`;
+  return `
+    <div class="chat-wrap">
+      <div style="background:#0f172a; padding:12px; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between;">
+        <div><strong>🎤 Entrevista ${currentCompany}</strong><span style="font-size:10px; margin-left:8px; color:#60a5fa;">${typeof max === 'string' ? max : max}</span></div>
+        <button class="back-btn" onclick="showView('home')">← Sair</button>
+      </div>
+      <div class="messages" id="messages-area">
+        ${messages.map(m => `<div class="msg ${m.role}"><div class="msg-bubble">${escapeHtml(m.text)}</div></div>`).join('')}
+        ${isLoading ? '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>' : ''}
+      </div>
+      <div class="input-row">
+        <input id="msg-input" placeholder="Digite sua resposta..." ${isLoading ? 'disabled' : ''} />
+        <button class="send-btn" onclick="sendMessage()" ${isLoading ? 'disabled' : ''}>➤</button>
+      </div>
+      <div class="tip-box">
+        💡 Dica: Seja sincero, fale com calma e mostre vontade de aprender e crescer.
+      </div>
+    </div>
+  `;
+}
+
+function escapeHtml(text) {
+  return text.replace(/[&<>]/g, function(m) {
+    if(m === '&') return '&amp;';
+    if(m === '<') return '&lt;';
+    if(m === '>') return '&gt;';
+    return m;
+  }).replace(/\n/g, '<br>');
+}
+
+async function sendMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input?.value.trim();
+  if (!text || isLoading) return;
+
+  messages.push({ role: 'user', text: text });
+  isLoading = true;
+  render();
+
+  let currentQuestion = "";
+  let isLastMandatory = false;
+
+  if (!isExtraQuestions && questionIndex < MANDATORY_QUESTIONS.length) {
+    currentQuestion = MANDATORY_QUESTIONS[questionIndex];
+    isLastMandatory = (questionIndex === MANDATORY_QUESTIONS.length - 1);
+  } else {
+    isExtraQuestions = true;
+    currentQuestion = "pergunta adicional";
+  }
+
+  let systemPrompt = "";
+  
+  if (!isExtraQuestions) {
+    systemPrompt = `Você é um entrevistador profissional em Moçambique.
+
+Pergunta obrigatória: "${currentQuestion}"
+Resposta do candidato: "${text}"
+
+Avalie a resposta de forma PROFISSIONAL:
+1. Dê feedback sincero (bom, razoável, ou precisa melhorar)
+2. Dê 1 dica específica
+3. Seja construtivo
+4. Máximo 50 palavras
+
+${isLastMandatory ? 'Depois do feedback, avise que as 12 perguntas obrigatórias acabaram e que vai fazer mais perguntas adicionais.' : `Depois do feedback, faça a PRÓXIMA pergunta obrigatória: ${MANDATORY_QUESTIONS[questionIndex+1]}`}
+
+Formato: [Feedback] + [Próxima pergunta]`;
+  } else {
+    systemPrompt = `Você é um entrevistador profissional em Moçambique. As 12 perguntas obrigatórias já foram feitas. Agora faça uma PERGUNTA ADICIONAL relevante para o candidato, baseada no contexto da empresa ${currentCompany} e nas respostas anteriores. Seja profissional. Máximo 50 palavras.`;
+  }
+
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{ role: 'system', content: systemPrompt }],
+        max_tokens: 300,
+        temperature: 0.7
+      })
+    });
+    const data = await res.json();
+    let reply = data.choices?.[0]?.message?.content || 'Obrigado pela resposta.';
+    
+    messages.push({ role: 'bot', text: reply });
+    
+    if (!isExtraQuestions) {
+      questionIndex++;
+      if (questionIndex >= MANDATORY_QUESTIONS.length) {
+        isExtraQuestions = true;
+        if (!reply.includes("obrigatórias acabaram")) {
+          messages.push({ role: 'bot', text: '✅ As 12 perguntas obrigatórias terminaram. Agora vou fazer mais perguntas para conhecê-lo melhor.' });
+        }
+      }
+    }
+    
+  } catch(e) {
+    messages.push({ role: 'bot', text: 'Erro de ligação. Tente novamente.' });
+  }
+  
+  isLoading = false;
+  render();
+  setTimeout(() => { const a = document.getElementById('messages-area'); if(a) a.scrollTop = a.scrollHeight; }, 100);
+}
+
+function triggerConfetti() {
+  for(let i=0; i<60; i++){
+    const el = document.createElement('div');
+    el.style.cssText = `position:fixed;width:8px;height:8px;background:${['#10b981','#f59e0b','#3b82f6'][Math.floor(Math.random()*3)]};top:${Math.random()*50}%;left:${Math.random()*100}%;z-index:9999;animation:fall 2s ease forwards;pointer-events:none;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2000);
+  }
+}
+
+const style = document.createElement('style');
+style.textContent = '@keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+document.head.appendChild(style);
+
+render();
+</script>
+</body>
+</html>
