@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Walter JobPrep — Moçambique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0f1e; min-height: 100vh; }
+    .app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #0f172a; color: #f1f5f9; }
+    .header { background: rgba(15,23,42,0.97); border-bottom: 1px solid #1e293b; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px; }
+    .logo-icon { width: 32px; height: 32px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav button { background: none; border: none; color: #64748b; font-size: 13px; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
+    .nav button:hover { color: #60a5fa; background: rgba(96,165,250,0.08); }
+    .main { padding: 20px 16px; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 999px; background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.25); color: #60a5fa; font-size: 11px; margin-bottom: 16px; }
+    h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+    .gradient-text { background: linear-gradient(135deg, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 16px; }
+    .stats { display: flex; gap: 14px; font-size: 12px; color: #64748b; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
+    .section-title { text-align: center; font-size: 16px; font-weight: 600; margin: 20px 0 16px; }
+    .persona-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 24px; }
+    .persona-card { background: rgba(30,41,59,0.5); border: 1px solid #334155; border-radius: 16px; padding: 16px 12px; cursor: pointer; text-align: center; transition: all 0.2s; }
+    .persona-card:hover { border-color: #3b82f6; background: rgba(30,41,59,0.9); transform: translateY(-2px); }
+    .persona-icon { font-size: 32px; margin-bottom: 8px; }
+    .persona-name { font-size: 14px; font-weight: 600; }
+    .persona-role { font-size: 10px; color: #64748b; margin-top: 4px; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+    .feature { background: rgba(30,41,59,0.4); border: 1px solid #1e293b; border-radius: 14px; padding: 14px 8px; cursor: pointer; text-align: center; }
+    .feature:hover { background: rgba(30,41,59,0.8); }
+    .feature-icon { font-size: 24px; margin-bottom: 6px; }
+    .feature h3 { font-size: 12px; }
+    .feature p { font-size: 10px; color: #64748b; }
+    .stats-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; background: rgba(15,23,42,0.6); border: 1px solid #1e293b; border-radius: 18px; padding: 16px 12px; text-align: center; margin-bottom: 20px; }
+    .stats-bar .num { font-size: 20px; font-weight: 600; }
+    .stats-bar .lbl { font-size: 8px; color: #475569; text-transform: uppercase; }
+    .back-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+    .back-btn:hover { color: #fff; }
+    .btn-primary { width: 100%; background: #2563eb; border: none; border-radius: 12px; padding: 14px; font-size: 14px; font-weight: 500; color: #fff; cursor: pointer; margin-top: 12px; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .search-input { width: 100%; background: #0a0f1e; border: 1px solid #334155; border-radius: 12px; color: #fff; padding: 14px; margin-bottom: 16px; font-size: 14px; }
+    .company-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+    .company-btn { background: #0f172a; border: 1px solid #334155; border-radius: 10px; color: #94a3b8; font-size: 12px; padding: 8px 12px; cursor: pointer; }
+    .company-btn:hover { border-color: #3b82f6; color: #fff; }
+    .cv-area textarea { width: 100%; background: #0a0f1e; border: 1px solid #334155; border-radius: 12px; color: #e2e8f0; padding: 14px; min-height: 120px; font-size: 13px; resize: vertical; }
+    .template-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+    .template-card { background: #1e293b; border-radius: 14px; border: 1px solid #334155; text-align: center; padding: 12px; }
+    .template-card h3 { font-size: 13px; margin-bottom: 6px; }
+    .template-btn { background: #2563eb; border: none; border-radius: 8px; padding: 8px; color: #fff; cursor: pointer; width: 100%; font-size: 12px; }
+    .premium-badge { background: linear-gradient(135deg, #f59e0b, #ef4444); font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 999px; display: inline-block; }
+    .upload-area { border: 2px dashed #334155; border-radius: 14px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 12px; }
+    .upload-area:hover { border-color: #3b82f6; background: rgba(37,99,235,0.08); }
+    .chat-wrap { display: flex; flex-direction: column; height: 520px; }
+    .messages { flex: 1; overflow-y: auto; padding: 16px; background: rgba(15,23,42,0.5); border-radius: 16px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 12px; }
+    .msg { display: flex; }
+    .msg.user { justify-content: flex-end; }
+    .msg-bubble { padding: 10px 14px; border-radius: 14px; font-size: 13px; max-width: 85%; line-height: 1.5; }
+    .msg.bot .msg-bubble { background: #1e293b; border: 1px solid #334155; border-top-left-radius: 3px; }
+    .msg.user .msg-bubble { background: #2563eb; border-top-right-radius: 3px; }
+    .input-row { display: flex; gap: 8px; background: #1e293b; border-radius: 14px; border: 1px solid #334155; padding: 5px; }
+    .input-row input { flex: 1; background: none; border: none; outline: none; color: #fff; padding: 10px; font-size: 13px; }
+    .send-btn { background: #2563eb; border: none; border-radius: 10px; width: 40px; cursor: pointer; font-size: 18px; color: white; }
+    .typing { display: flex; gap: 4px; padding: 10px 14px; background: #1e293b; border-radius: 14px; width: fit-content; }
+    .dot { width: 6px; height: 6px; background: #60a5fa; border-radius: 50%; animation: pulse 1s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    .feedback-box { background: #1e293b; border-radius: 16px; padding: 16px; margin-top: 16px; font-size: 13px; line-height: 1.6; }
+    .question-card { background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3); border-radius: 12px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+    .question-card:hover { background: rgba(37,99,235,0.2); }
+    .toast { position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1e293b; border-left: 4px solid #10b981; padding: 12px; border-radius: 12px; z-index: 1000; animation: slideUp 0.3s ease; text-align: center; }
+    @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .tip-box { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; padding: 12px; margin-top: 12px; font-size: 12px; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="logo"><div class="logo-icon">📄</div> Walter JobPrep</div>
+    <div class="nav">
+      <button onclick="showView('home')">Início</button>
+      <button onclick="showView('cv')">CV</button>
+      <button onclick="showView('templates')">Modelos</button>
+      <button onclick="showView('questions')">Perguntas</button>
+    </div>
+  </div>
+  <div class="main" id="app-content"></div>
+</div>
+
+<script>
+const GROQ_KEY = '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';
+
+const questions = [
+  { text: "Fale um pouco sobre você.", tip: "Fale da sua experiência, o que sabe fazer e o que quer aprender." },
+  { text: "Por que você quer trabalhar nesta empresa?", tip: "Pesquise sobre a empresa antes. Diga o que admira nela." },
+  { text: "Quais são seus pontos fortes?", tip: "Sou trabalhador, aprendo rápido, gosto de ajudar colegas." },
+  { text: "Quais são seus pontos fracos?", tip: "Diga algo que está a melhorar, como informática ou inglês." },
+  { text: "Onde você se vê daqui a 5 anos?", tip: "Quero crescer na empresa e assumir mais responsabilidades." },
+  { text: "Por que devemos contratar você?", tip: "Sou dedicado, aprendo rápido e quero trabalhar." },
+  { text: "Qual sua experiência anterior?", tip: "Conte onde trabalhou e o que aprendeu." },
+  { text: "Você sabe trabalhar em equipe?", tip: "Sim, gosto de ajudar colegas e aprender com eles." },
+  { text: "Como você lida com pressão?", tip: "Mantenho a calma e foco em resolver o problema." },
+  { text: "Qual sua disponibilidade?", tip: "Seja honesto sobre horários e fins de semana." },
+  { text: "Tem transporte para o trabalho?", tip: "Diga como vai chegar e quanto tempo leva." },
+  { text: "Qual sua pretensão salarial?", tip: "Pesquise antes ou diga 'estou aberto a negociar'." }
+];
+
+const tips = ["Chegue 15 minutos antes", "Vista-se de forma simples", "Olhe nos olhos", "Fale pausadamente", "Seja educado", "Desligue o telemóvel"];
+
+let currentView = 'home';
+let currentPersona = 'walter';
+let currentCompany = '';
+let messages = [];
+let isLoading = false;
+
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+function showView(view, personaId, companyName) {
+  currentView = view;
+  if (personaId) currentPersona = personaId;
+  if (companyName !== undefined) currentCompany = companyName;
+  if (view === 'chat' && messages.length === 0) {
+    messages = [{ role: 'bot', text: `Olá! Sou Walter. ${currentCompany ? `Vamos treinar para ${currentCompany}. Responda com calma.` : 'Vamos praticar perguntas de entrevista.'}` }];
+  }
+  render();
+  if (view === 'chat') setTimeout(() => { const a = document.getElementById('messages-area'); if(a) a.scrollTop = a.scrollHeight; }, 100);
+}
+
+function render() {
+  const el = document.getElementById('app-content');
+  if (currentView === 'home') el.innerHTML = renderHome();
+  else if (currentView === 'cv') el.innerHTML = renderCV();
+  else if (currentView === 'templates') el.innerHTML = renderTemplates();
+  else if (currentView === 'company') el.innerHTML = renderCompany();
+  else if (currentView === 'chat') el.innerHTML = renderChat();
+  else if (currentView === 'payment') el.innerHTML = renderPayment();
+  else if (currentView === 'questions') el.innerHTML = renderQuestions();
+  if (currentView === 'chat') document.getElementById('msg-input')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendMessage(); });
+}
+
+function renderHome() {
+  return `<div style="text-align:center;"><div class="badge">🇲🇿 Preparação para Entrevistas</div><h1>Prepare-se para <span class="gradient-text">conseguir o emprego</span></h1><p class="subtitle">Aprenda a responder as perguntas que mais caem nas entrevistas.</p><div class="stats"><span>📋 12 perguntas</span><span>🎯 Dicas</span><span>💬 Simulação</span></div><div class="section-title">🎤 Comece a treinar</div><div class="persona-grid"><div class="persona-card" onclick="showView('company','walter')"><div class="persona-icon">💼</div><div class="persona-name">Walter</div><div class="persona-role">Entrevistador</div></div><div class="persona-card" onclick="showView('questions')"><div class="persona-icon">📋</div><div class="persona-name">Perguntas</div><div class="persona-role">Mais comuns</div></div><div class="persona-card" onclick="showView('cv')"><div class="persona-icon">📄</div><div class="persona-name">Validar CV</div><div class="persona-role">Análise grátis</div></div><div class="persona-card" onclick="showView('templates')"><div class="persona-icon">🎨</div><div class="persona-name">Modelos</div><div class="persona-role">CV prontos</div></div></div><div class="section-title">💡 Dicas rápidas</div><div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;">${tips.map(t => `<span style="background:rgba(30,41,59,0.5);padding:6px 12px;border-radius:20px;font-size:11px;">${t}</span>`).join('')}</div><div class="stats-bar"><div><div class="num">+500</div><div class="lbl">Ajudados</div></div><div><div class="num" style="color:#60a5fa">24/7</div><div class="lbl">Grátis</div></div><div><div class="num" style="color:#a78bfa">100%</div><div class="lbl">Local</div></div><div><div class="num" style="color:#34d399">0MT</div><div class="lbl">Treino</div></div></div></div>`;
+}
+
+function renderQuestions() {
+  return `<div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h2 style="font-size:18px;">📋 Perguntas que mais caem</h2><button class="back-btn" onclick="showView('home')">← Voltar</button></div><p style="font-size:13px;color:#94a3b8;margin-bottom:16px;">Toque em cada pergunta para ver uma dica.</p>${questions.map((q, i) => `<div class="question-card" onclick="toggleTip(${i})"><div style="font-weight:600;margin-bottom:6px;">${i+1}. ${q.text}</div><div id="tip-${i}" style="display:none;font-size:12px;color:#60a5fa;margin-top:8px;padding-top:8px;border-top:1px solid rgba(96,165,250,0.2);">💡 ${q.tip}</div></div>`).join('')}<button class="btn-primary" onclick="showView('company','walter')" style="margin-top:16px;">🎤 Praticar entrevista</button></div>`;
+}
+
+function toggleTip(i) { const tip = document.getElementById(`tip-${i}`); if(tip) tip.style.display = tip.style.display === 'none' ? 'block' : 'none'; }
+
+function renderCompany() {
+  return `<div style="text-align:center;"><div style="font-size:40px;margin-bottom:12px;">🎤</div><h2 style="font-size:20px;">Treinar entrevista</h2><p style="color:#94a3b8;margin-bottom:16px;">Escolha uma empresa ou digite o nome</p><input class="search-input" id="company-search" placeholder="Ex: Mozal, Shoprite, BIM..." /><div style="font-size:11px;color:#475569;margin-bottom:8px;">Empresas populares:</div><div class="company-grid">${['Mozal','Shoprite','BIM','TotalEnergies','KFC','Coca-Cola','EDM','Recheio'].map(c => `<button class="company-btn" onclick="startInterview('${c}')">${c}</button>`).join('')}</div><button class="btn-primary" onclick="startInterviewCustom()">▶ Iniciar treino</button><button class="back-btn" onclick="showView('home')" style="margin-top:16px;">← Voltar</button></div>`;
+}
+
+function startInterview(company) { currentCompany = company; messages = []; showView('chat', 'walter', company); }
+function startInterviewCustom() { const c = document.getElementById('company-search')?.value.trim(); if(c) startInterview(c); else showToast('Digite o nome da empresa'); }
+
+function renderChat() {
+  return `<div class="chat-wrap"><div style="background:#0f172a;padding:12px;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;"><div><strong>🎤 Entrevista</strong><span style="font-size:12px;color:#60a5fa;margin-left:8px;">${currentCompany || 'Prática'}</span></div><button class="back-btn" onclick="showView('home')">← Sair</button></div><div class="messages" id="messages-area">${messages.map(m => `<div class="msg ${m.role}"><div class="msg-bubble">${escapeHtml(m.text)}</div></div>`).join('')}${isLoading ? '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>' : ''}</div><div class="input-row"><input id="msg-input" placeholder="Digite sua resposta..." ${isLoading ? 'disabled' : ''} /><button class="send-btn" onclick="sendMessage()" ${isLoading ? 'disabled' : ''}>➤</button></div><div class="tip-box" style="margin-top:8px;">💡 Dica: Fale com calma, seja sincero e mostre vontade de aprender.</div></div>`;
+}
+
+function escapeHtml(text) { return text.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }).replace(/\n/g,'<br>'); }
+
+async function sendMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input?.value.trim();
+  if (!text || isLoading) return;
+  messages.push({ role: 'user', text: text });
+  isLoading = true;
+  render();
+  const systemPrompt = `Você é um entrevistador simpático em Moçambique. Faça perguntas comuns de entrevista. Use linguagem simples. Seja educado, dê feedback positivo. Quando a pessoa responder bem, diga "Boa resposta!". Responda em português simples. Máximo 80 palavras.`;
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+      body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: text }], max_tokens: 350 })
+    });
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || 'Obrigado pela resposta! Continue praticando.';
+    messages.push({ role: 'bot', text: reply });
+    if (reply.toLowerCase().includes('boa resposta')) triggerConfetti();
+  } catch(e) { messages.push({ role: 'bot', text: 'Erro de ligação. Tente novamente.' }); }
+  isLoading = false;
+  render();
+  setTimeout(() => { const a = document.getElementById('messages-area'); if(a) a.scrollTop = a.scrollHeight; }, 100);
+}
+
+function triggerConfetti() {
+  for(let i=0;i<60;i++){ const el=document.createElement('div'); el.style.cssText=`position:fixed;width:8px;height:8px;background:${['#10b981','#f59e0b','#3b82f6'][Math.floor(Math.random()*3)]};top:${Math.random()*50}%;left:${Math.random()*100}%;z-index:9999;animation:fall 2s ease forwards;`; document.body.appendChild(el); setTimeout(()=>el.remove(),2000); }
+  showToast('🎉 Boa resposta! 🎉');
+}
+
+function renderCV() {
+  return `<div><div style="display:flex;justify-content:space-between;margin-bottom:16px;"><h2 style="font-size:18px;">📄 Validar seu CV</h2><button class="back-btn" onclick="showView('home')">← Voltar</button></div><div style="background:rgba(30,41,59,0.6);border-radius:18px;padding:20px;"><div class="upload-area" onclick="document.getElementById('cv-file').click()"><div style="font-size:36px;">📄</div><div>Carregue seu CV</div><div style="font-size:12px;">PDF, Word ou TXT</div></div><input type="file" id="cv-file" accept=".pdf,.doc,.docx,.txt" style="display:none" onchange="handleFile(this)" /><div class="cv-area"><textarea id="cv-text" placeholder="Ou cole o texto do seu CV aqui..."></textarea></div><button class="btn-primary" onclick="analyzeCV()">🔍 Analisar CV (grátis)</button><div id="cv-feedback" style="margin-top:16px;"></div></div><div style="background:linear-gradient(135deg,rgba(37,99,235,0.15),rgba(124,58,237,0.1));border-radius:18px;padding:16px;margin-top:14px;text-align:center;"><div class="premium-badge">⭐ PREMIUM</div><div style="margin-top:8px;"><strong>CV Profissional</strong><div style="font-size:12px;">Feito por especialistas · Entrega 24h</div></div><button class="btn-primary" onclick="showView('payment')" style="background:#059669;">✨ Encomendar — 50 MT</button></div></div>`;
+}
+
+async function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const textarea = document.getElementById('cv-text');
+  textarea.value = '⏳ A processar...';
+  if (file.type === 'text/plain') {
+    const reader = new FileReader();
+    reader.onload = (e) => textarea.value = e.target.result.substring(0, 5000);
+    reader.readAsText(file);
+  } else if (file.type === 'application/pdf') {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = '';
+      for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        fullText += textContent.items.map(item => item.str).join(' ') + '\n';
+      }
+      textarea.value = fullText.substring(0, 5000);
+      showToast('✅ CV carregado!');
+    } catch(e) { textarea.value = 'Erro ao ler PDF. Cole o texto manualmente.'; }
+  } else { textarea.value = `[${file.name}] - Cole o conteúdo manualmente.`; }
+}
+
+async function analyzeCV() {
+  const text = document.getElementById('cv-text')?.value.trim();
+  if(!text || text.includes('⏳')) { showToast('Cole ou carregue seu CV primeiro'); return; }
+  document.getElementById('cv-feedback').innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+      body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: 'Analise o CV de forma simples. Dê NOTA de 0 a 100, 3 PONTOS BONS, 3 COISAS PARA MELHORAR, e 3 DICAS PRÁTICAS.' }, { role: 'user', content: text.substring(0, 4000) }], max_tokens: 600 })
+    });
+    const data = await res.json();
+    document.getElementById('cv-feedback').innerHTML = `<div class="feedback-box">${(data.choices?.[0]?.message?.content || 'Erro.').replace(/\n/g,'<br>')}</div>`;
+    showToast('✅ Análise concluída!');
+  } catch(e) { document.getElementById('cv-feedback').innerHTML = '<div style="color:#f87171;">❌ Erro. Tente novamente.</div>'; }
+}
+
+function renderTemplates() {
+  return `<div><div style="display:flex;justify-content:space-between;margin-bottom:16px;"><h2 style="font-size:18px;">🎨 Modelos de CV grátis</h2><button class="back-btn" onclick="showView('home')">← Voltar</button></div><div style="background:rgba(16,185,129,0.08);border-radius:12px;padding:12px;text-align:center;margin-bottom:16px;">🆓 <strong>100% Gratuitos</strong> — Edite no Canva</div><div class="template-grid">${[['Simples','📄','https://www.canva.com/resumes/templates/simple/'],['Moderno','✨','https://www.canva.com/resumes/templates/modern/'],['Profissional','💼','https://www.canva.com/resumes/templates/professional/'],['Criativo','🎨','https://www.canva.com/resumes/templates/creative/']].map(t => `<div class="template-card"><div style="font-size:34px;">${t[1]}</div><h3>${t[0]}</h3><button class="template-btn" onclick="window.open('${t[2]}','_blank')">🎨 Usar grátis</button></div>`).join('')}</div><div class="tip-box" style="text-align:center;">🚀 Em breve: mais modelos</div></div>`;
+}
+
+function renderPayment() {
+  return `<div><div style="display:flex;justify-content:space-between;margin-bottom:20px;"><h2 style="font-size:18px;">💳 Pagamento</h2><button class="back-btn" onclick="showView('cv')">← Voltar</button></div><div style="background:linear-gradient(135deg,rgba(37,99,235,0.2),rgba(124,58,237,0.1));border-radius:18px;padding:20px;text-align:center;"><div style="font-size:40px;">📱</div><h3>Pague via e-Mola</h3><p>Envie 50 MT para o número abaixo</p><div style="background:#0a0f1e;border-radius:14px;padding:16px;"><div style="font-size:12px;color:#64748b;">Número e-Mola</div><div style="font-size:28px;font-weight:700;color:#60a5fa;">878 144 427</div></div><button class="btn-primary" onclick="window.open('https://wa.me/258878144427?text=Olá! Quero meu CV Profissional (50 MT)','_blank')" style="background:#059669;margin-top:16px;">✅ Enviar no WhatsApp</button></div></div>`;
+}
+
+const style = document.createElement('style');
+style.textContent = '@keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+document.head.appendChild(style);
+
+render();
+</script>
+</body>
+</html>
