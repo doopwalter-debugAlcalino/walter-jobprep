@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walter JobPrep</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #0a0f1e; }
+    .app { max-width: 480px; margin: 0 auto; background: #0f172a; min-height: 100vh; color: white; }
+    .header { padding: 16px; background: #0f172a; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; }
+    .logo { font-weight: bold; font-size: 18px; }
+    button { background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 10px; margin: 10px; cursor: pointer; }
+    .btn { display: inline-block; }
+    .question-list { padding: 16px; }
+    .q-item { background: #1e293b; margin: 8px 0; padding: 12px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="logo">🎤 Walter JobPrep</div>
+    <div><button onclick="start()" style="padding: 6px 12px;">Entrevista</button></div>
+  </div>
+  <div class="main" id="content">
+    <div style="padding: 20px; text-align: center;">
+      <h2>📋 As 12 Perguntas que Sempre Caem</h2>
+      <div class="question-list">
+        <div class="q-item">1. Fale um pouco sobre você.</div>
+        <div class="q-item">2. Por que quer trabalhar aqui?</div>
+        <div class="q-item">3. Quais seus pontos fortes?</div>
+        <div class="q-item">4. Quais seus pontos fracos?</div>
+        <div class="q-item">5. Onde se vê em 5 anos?</div>
+        <div class="q-item">6. Por que contratar você?</div>
+        <div class="q-item">7. Qual sua experiência anterior?</div>
+        <div class="q-item">8. Sabe trabalhar em equipe?</div>
+        <div class="q-item">9. Como lida com pressão?</div>
+        <div class="q-item">10. Qual sua disponibilidade?</div>
+        <div class="q-item">11. Pretensão salarial?</div>
+        <div class="q-item">12. Tem perguntas para nós?</div>
+      </div>
+      <button onclick="start()" style="background: #10b981; margin-top: 20px;">▶ Começar Treino</button>
+    </div>
+  </div>
+</div>
+<script>
+  function start() {
+    alert("Escolha uma empresa para começar!");
+  }
+</script>
+</body>
+</html>
